@@ -3,13 +3,11 @@ from django.db import models
 
 # Create your models here.
 
-class footballShop(models.Model):
-    CATEGORY_CHOICES = []
-
+class product(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField()
+    name = models.CharField(max_length=255)
     price = models.IntegerField()
     description = models.TextField()
-    thumbnail = models.URLField()
-    category = models.CharField()
-    is_featured = models.BooleanField()
+    thumbnail = models.URLField(blank=True, null=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='update')
+    is_featured = models.BooleanField(default=False)
