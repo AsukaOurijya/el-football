@@ -117,16 +117,16 @@ Nama Aplikasi: El Football
 
 ![alt text](alur.png)
 
-- urls.py \
+- **urls.py** \
   Bekerja sebagai router yang menentukan view function atau class-based view dimana harus dipanggil setiap request.
 
-- views.py \
+- **views.py** \
   Menjadi penghubung utama antara URL, database (model.py) dan tampilan (main.html). View menerima request dari urls.py lalu dapat ambil data dari models.py datau kirim data ke main.html.
 
-- models.py
+- **models.py** \
   Digunakan untuk menfefinisikan struktur database dengan konsep Object-Relational Mapping (ORM).
 
-- main.html
+- **main.html** \
   Berupa file HTML namun mendukung Django Template Language (DTL).
 
 ## 3. Jelaskan peran settings.py dalam proyek Django!
