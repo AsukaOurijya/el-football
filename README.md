@@ -12,19 +12,19 @@ Nama Aplikasi: El Football
 
 ## 4. Bagaimana cara kerja migrasi database di Django?
 
-a. Definisikan model di models.py. Model adalah kelas Python yang mewakili tabel DB.
+a. ***Definisikan model di models.py**. Model adalah kelas Python yang mewakili tabel DB.
 
-b. Buat migration: python manage.py makemigrations
+b. **Buat migration**: python manage.py makemigrations
     - Django mendeteksi perubahan pada model dan membuat file migration (mis. 0001_initial.py) yang berisi operasi (CreateModel, AddField, AlterField, dsb).
     - Migration adalah file Python yang mendeskripsikan transformasi skema.
 
-c. Terapkan migration: python manage.py migrate
+c. **Terapkan migration**: python manage.py migrate
     - Django menjalankan operasi migration terhadap database target, membuat/ubah tabel sesuai instruksi migration.
     - Riwayat migration disimpan di tabel django_migrations sehingga Django tahu migrasi mana yang sudah diterapkan.
 
-d. Mengubah model later: buat perubahan pada models.py, jalankan makemigrations lagi (membuat migration baru seperti 0002_auto...), lalu migrate untuk menerapkannya.
+d. **Mengubah model later**: buat perubahan pada models.py, jalankan makemigrations lagi (membuat migration baru seperti 0002_auto...), lalu migrate untuk menerapkannya.
 
-e. Operasi lanjutan: ada operasi lanjutan seperti RunPython untuk melakukan data migration, squashmigrations untuk menggabungkan banyak migration menjadi satu, dan rollback memakai migrate app_name migration_name.
+e. **Operasi lanjutan**: ada operasi lanjutan seperti RunPython untuk melakukan data migration, squashmigrations untuk menggabungkan banyak migration menjadi satu, dan rollback memakai migrate app_name migration_name.
 
 ## 5. Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?
 
