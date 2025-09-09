@@ -1,5 +1,3 @@
-# el-football
+# El Football - Toko Perlengkapan Sepak Bola
+## Tugas Individu PBP - Kelas C - 2406431510 - Muhammad Azka Awliya 
 
-Nama : Muhammad Azka Awliya
-NPM  : 2406431510
-Kelas: PBP C
