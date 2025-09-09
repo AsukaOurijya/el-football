@@ -6,10 +6,11 @@ Nama Aplikasi: El Football
 
 ## 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
-    Test line
-```
-Formasi Empat Tiga Dua Satu Komando
-```
+test 1
+
+> Formasi Empat Tiga Dua Satu Komando
+
+test 2
 
 ## 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
 
