@@ -10,6 +10,24 @@ Nama Aplikasi: El Football
 
 ## 3. Jelaskan peran settings.py dalam proyek Django!
 
+**settings.py** adalah pusat konfigurasi proyek dan mendefinisikan cara kerja proyek (database, apps, keamanan, lokasi, template, dan lain sebagainya). Perannya meliputi:
+
+**INSTALLED_APPS**: daftar aplikasi (app) yang aktif dalam proyek — Django akan memuatnya (migrations, admin, template lookup).
+
+**DATABASES**: konfigurasi koneksi database.
+
+**TEMPLATES**: pengaturan engine template, direktori DIRS, context processors.
+
+**MIDDLEWARE**: middleware stack yang memproses request/response (security, session, csrf, dll).
+
+**STATIC & MEDIA**: lokasi file statis HTML dan file upload media.
+
+**DEBUG & ALLOWED_HOSTS**: mode pengembangan/production dan host yang diperbolehkan untuk melayani request.
+
+**SECRET_KEY**: kunci kriptografi untuk session dan security — harus dirahasiakan (jangan commit ke repo publik).
+
+**LOGGING / EMAIL / AUTHENTICATION BACKENDS**: berbagai konfigurasi lain untuk logging, email, otentikasi, dsb.
+
 ## 4. Bagaimana cara kerja migrasi database di Django?
 
 a. ***Definisikan model di models.py**. Model adalah kelas Python yang mewakili tabel DB.
@@ -45,3 +63,5 @@ g. **Skalabilitas & produksi-ready**: proyek kecil cepat dibuat, dan framework i
 h. **Konsistensi**: Django punya konvensi dan struktur proyek yang konsisten sehingga memudahkan pemula mengikuti best practices.
 
 ## 6. Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?
+
+Selama tutorial 1, asisten dosen turut membantu saya dalam menghadapi suatu permasalahan terutama pada migrasi data. Dari situ saya belajar bahwa setiap penambahan data, diperlukan migrasi basis data setiap perubahan berkala. Asisten dosen membantu saya dengan bahasa yang mudah dipahami, step-by-step, dan well structured. Namun saya memiliki saran untuk menambahkan section khusus untuk mengatasi beberapa error yang biasanya terjadi pada mahasiswa. Sejauh ini, kinerja asisten dosen sudah cukup baik. Terima kasih tim asisten dosen dan tim dosen.
