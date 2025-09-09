@@ -115,6 +115,8 @@ Nama Aplikasi: El Football
 
 ## 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
 
+    ![altx text]["alur mvt.png"]
+
 ## 3. Jelaskan peran settings.py dalam proyek Django!
 
 **settings.py** adalah pusat konfigurasi proyek dan mendefinisikan cara kerja proyek (database, apps, keamanan, lokasi, template, dan lain sebagainya). Perannya meliputi:
@@ -137,7 +139,7 @@ Nama Aplikasi: El Football
 
 ## 4. Bagaimana cara kerja migrasi database di Django?
 
-a. ***Definisikan model di models.py**. Model adalah kelas Python yang mewakili tabel DB.
+a. **Definisikan model di models.py**. Model adalah kelas Python yang mewakili tabel DB.
 
 b. **Buat migration**: python manage.py makemigrations
     - Django mendeteksi perubahan pada model dan membuat file migration (mis. 0001_initial.py) yang berisi operasi (CreateModel, AddField, AlterField, dsb).
