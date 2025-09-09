@@ -18,7 +18,13 @@ Nama Aplikasi: El Football
     python manage.py startapp main
     ```
 
+    Folder main otomatis membentuk beberapa file standar django seperti _ _ init _ _.py, admin.py, apps.py, models.py, tests.py, urls.py, dan views.py.
+
 3. Melakukan Routing Aplikasi main ke Proyek
+
+    - Menambah main ke dalam INSTALLED_APPS di settings.py
+    - Membuat file urls.py di dalam folder app main
+    - Menghubungkan urls.py milik main ke urls.py milik el_football (folder proyek).
 
 4. Membuat Model Product pada models.py
 
@@ -72,9 +78,39 @@ Nama Aplikasi: El Football
     ]
     ```
 
-7. Membuat Template main.html
+7. Membuat Folder 'templates' dan file main.html di Dalamnya
+   
+   ```
+    <h1>El Football</h1>
+    <h3>High Quality yet Affordable Football Shop in Town!</h3>
+
+    <h3>Hello, </h5>
+    <h3>{{name}}</h3>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="menu">Home</a></li>
+            <li><a href="menu">About Us</a></li>
+            <li><a href="menu">Discover</a></li>
+            <li><a href="menu">Deals</a></li>
+            <li><a href="menu">Contact Us</a></li>
+        </ul>
+
+        <p>OO Design</p>
+    </nav>
+   ```
 
 8. Melakukan Deployment ke PWS
+
+    Pada proyek ini, saya menggunakan branch main. Tidak lupa menambahkan file .gitignore untuk tidak memasukkan .env dan .env.prod sebagai target file yang akan di-push oleh git.
+
+    ```
+    git init
+    git add . 
+    git commit -m "Progress Tugas Individu"
+    git push origin main
+    git push pws main
+    ```
 
 
 ## 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
