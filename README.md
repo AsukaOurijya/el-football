@@ -6,11 +6,26 @@ Nama Aplikasi: El Football
 
 ## 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
-test 1
+1. Membuat Proyek Django Baru
+   
+   ```
+   django-admin startproject el_football
+   ```
 
-> Formasi Empat Tiga Dua Satu Komando
+2. Membuat Aplikasi Baru dengan Nama main
 
-test 2
+3. Melakukan Routing Aplikasi main ke Proyek
+
+4. Membuat Model Product pada models.py
+
+5. Membuat Fungsi di views.py
+
+6. Membuat Routing di main/urls.py
+
+7. Membuat Template main.html
+
+8. Melakukan Deployment ke PWS
+
 
 ## 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
 
