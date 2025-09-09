@@ -14,13 +14,63 @@ Nama Aplikasi: El Football
 
 2. Membuat Aplikasi Baru dengan Nama main
 
+    ```
+    python manage.py startapp main
+    ```
+
 3. Melakukan Routing Aplikasi main ke Proyek
 
 4. Membuat Model Product pada models.py
 
+    ```
+    import uuid
+    from django.db import models
+
+    class product(models.Model):
+        CATEGORY_CHOICES = [
+            ('baju', 'Baju'),
+            ('sepatu', 'Sepatu'),
+            ('bola', 'Bola'),
+            ('merch', 'Merch')
+        ]
+
+        id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+        name = models.CharField(max_length=255)
+        price = models.IntegerField()
+        description = models.TextField()
+        thumbnail = models.URLField(blank=True, null=True)
+        category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='update')
+        is_featured = models.BooleanField(default=False)
+    ```
+
 5. Membuat Fungsi di views.py
+   
+   ```
+   from django.shortcuts import render
+
+    def show_main(request):
+        context = {
+            'npm': '2406431510',
+            'name' : ' Muhammad Azka Awliya',
+            'class' : 'PBP C'
+        }
+
+        return render(request, "main.html", context)
+   ```
 
 6. Membuat Routing di main/urls.py
+
+    ```
+    from django.urls import path, include
+    from main.views import show_main
+
+    app_name = 'main'
+
+    urlpatterns = [
+        path('', show_main, name='show_main'),
+        path('', include('main.urls'))
+    ]
+    ```
 
 7. Membuat Template main.html
 
