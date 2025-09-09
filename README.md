@@ -2,7 +2,7 @@
 ## Tugas Individu PBP - Kelas C - 2406431510 - Muhammad Azka Awliya 
 
 Aplikasi dapat diakses melalui tautan berikut: https://muhammad-azka41-elfootball.pbp.cs.ui.ac.id/ \
-Nama Aplikasi: El Football \
+Nama Aplikasi: El Football
 
 ## 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
