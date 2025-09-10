@@ -155,21 +155,22 @@ a. **Definisikan model di models.py**. Model adalah kelas Python yang mewakili t
 
 b. **Buat migration**: 
 
+    - Django mendeteksi perubahan pada model dan membuat file migration (mis. 0001_initial.py) yang berisi operasi (CreateModel, AddField, AlterField, dsb).
+    - Migration adalah file Python yang mendeskripsikan transformasi skema.
+  
     ```
     python manage.py makemigrations
     ```
 
-    - Django mendeteksi perubahan pada model dan membuat file migration (mis. 0001_initial.py) yang berisi operasi (CreateModel, AddField, AlterField, dsb).
-    - Migration adalah file Python yang mendeskripsikan transformasi skema.
-
 c. **Terapkan migration**: 
+
+    - Django menjalankan operasi migration terhadap database target, membuat/ubah tabel sesuai instruksi migration.
+    - Riwayat migration disimpan di tabel django_migrations sehingga Django tahu migrasi mana yang sudah diterapkan.
+
     
     ```
     python manage.py migrate
     ```
-    
-    - Django menjalankan operasi migration terhadap database target, membuat/ubah tabel sesuai instruksi migration.
-    - Riwayat migration disimpan di tabel django_migrations sehingga Django tahu migrasi mana yang sudah diterapkan.
 
 d. **Mengubah model later**: buat perubahan pada models.py, jalankan makemigrations lagi (membuat migration baru seperti 0002_auto...), lalu migrate untuk menerapkannya.
 
