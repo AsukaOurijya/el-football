@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from main.models import product
+from django.http import HttpResponse
+from django.core import serializers
 
 # Create your views here.
 
@@ -11,4 +14,22 @@ def show_main(request):
 
     return render(request, "main.html", context)
 
-    
+def show_xml(request):
+    shop_item = product.objects.all()
+    xml_data = serializers.serialize("xml", shop_item)
+    return HttpResponse(xml_data, content_type="application/xml")
+
+def show_json(request):
+    shop_item = product.objects.all()
+    json_data = serializers.serialize("json", shop_item)
+    return HttpResponse(json_data, content_type="application/json")
+
+def show_xml_by_id(request, shop_id):
+    shop_item = product.objects.filter(pk=shop_id)
+    xml_data = serializers.serialize("xml", shop_item)
+    return HttpResponse(xml_data, content_type="application/xml")
+
+def show_json_by_id(request, shop_id):
+    shop_item = product.objects.filter(pk=shop_id)
+    json_data = serializers.serialize("json", shop_item)
+    return HttpResponse(json_data, content_type="application/json")
