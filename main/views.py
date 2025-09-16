@@ -47,11 +47,11 @@ def add_product(request):
     return render(request, "addpro.html", context)
 
 def show_product(request, id):
-    Product = get_object_or_404(product, pk=id)
-    Product.increment_views()
+    products = get_object_or_404(product, pk=id)
+    products.increment_views()
 
     context = {
-        'Product' : Product 
+        'products' : products 
     }
 
     return render(request, "product_detail.html", context)
