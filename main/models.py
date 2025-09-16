@@ -18,3 +18,14 @@ class product(models.Model):
     thumbnail = models.URLField(blank=True, null=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='update')
     is_featured = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def is_product_deals(self):
+        return self.product_views > 20
+
+    def increment_views(self):
+        self.product_views += 1
+        self.save()

@@ -1,18 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+
 <h1>El Football</h1>
 <h3>High Quality yet Affordable Football Shop in Town!</h3>
-
-<h3>Hello, </h5>
-<h3>{{name}}</h3>
 
 <nav class="navbar">
     <ul>
         <li><a href="menu">Home</a></li>
-        <li><a href="menu">About Us</a></li>
-        <li><a href="menu">Discover</a></li>
         <li><a href="menu">Deals</a></li>
-        <li><a href="menu">Contact Us</a></li>
+        <li><a href="menu">About Us</a></li>
     </ul>
-
-    <p>OO Design</p>
 </nav>
+
+<h3>Hello, </h5>
+<h3>{{name}}</h3>
+
+<p>Welcome to El Football Shop and Happy Shopping/Selling :D</p>
+
+<a href="{% url 'main:add_product' %}">
+    <button>
+        + Add Product
+    </button>
+</a>
+
+{% if not shop_item %}
+<p>Belum ada produk yang ditambahkan</p>
+{% else %}
+
+{% for item in shop_item %}
+<div>
+    <h2>
+        <a href="{% url 'main:show_product' product.id %}">
+            {{item.name}}
+        </a>
+    </h2>
+
+    <p>
+        <b>{{item.get_category_dipslay}}</b>
+
+        {% if item.isfeatured %}
+        <b>Featured</b>
+        {% endif %}
+
+        {% if item.is_deals %}
+        <b>Deals</b>
+        {% endif %}
+
+        <i>{{item.created_at}|date:"d M Y H:i"}</i>
+        | Views: {{item.product_views}}
+    </p>
+
+    {% if item.thumbnail %}
+    <img src="{{item.thumbnail}}" alt="thumbnail" width="150" height="100">
+    <br />
+    {% endif %}
+
+    <p>{{item.description|truncatewords:25}}...</p>
+
+    <p>
+        <a href="{% url 'main:show_product' product.id %}">
+            <button>Details</button>
+        </a>
+    </p>
+</div>
+
+<hr>
+
+{% endfor %}
+{% endif %}
+
+{% endblock content %}
 
