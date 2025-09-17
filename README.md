@@ -239,13 +239,13 @@ Saya menambahkan model Product di main/models.py dengan field seperti **name**, 
 2. **Views Sebagai Data Delivery** \
 Saya membuat 4 fungsi baru di main/views.py:
 
-a. **show_xml**:  menampilkan semua data produk dalam format XML. \
+    a. **show_xml**:  menampilkan semua data produk dalam format XML. 
 
-b. **show_json** : menampilkan semua data produk dalam format JSON. \
+    b. **show_json** : menampilkan semua data produk dalam format JSON. 
 
-c. **show_xml_by_id** : menampilkan data produk tertentu (berdasarkan id) dalam format XML. \
+    c. **show_xml_by_id** : menampilkan data produk tertentu (berdasarkan id) dalam format XML. 
 
-d. **show_json_by_id** : menampilkan data produk tertentu (berdasarkan id) dalam format JSON. \
+    d. **show_json_by_id** : menampilkan data produk tertentu (berdasarkan id) dalam format JSON. 
 
 3. **Menambah Routing URL** \
 Saya menambahkan path untuk semua fungsi views di **main/urls.py**, termasuk juga path untuk **add_product** dan **show_product**.
