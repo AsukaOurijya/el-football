@@ -268,3 +268,10 @@ Membuat README sebagai dokumentasi tugas.
 ## 6. Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
 
 Sejauh ini tidak ada. Para asdos sudah membantu mahasiswanya dengan baik.
+
+
+## Screenshot Postman
+![alt text](xml.png)
+![alt text](json.png)
+![alt text](xml_id.png)
+![alt text](json_id.png)
