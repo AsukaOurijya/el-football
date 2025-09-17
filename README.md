@@ -198,13 +198,73 @@ Selama tutorial 1, asisten dosen turut membantu saya dalam menghadapi suatu perm
 # Esai Tugas 3
 
 ## 1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
-    
+
+Menurut saya, data delivery atau penyediaan data melalui API denga format terstruktur seperti JSON/XML cukup penting terutama dalam pengembangan web karena:
+
+a. **Decoupling** \
+Memisahkan backend (server-side) dari frontend (client-side). Frontend, mobile app, atau pihak ketiga bisa mengonsumsi data yang sama tanpa menautkan ke tampilan HTML server.
+
+b. **Interoperabilitas** \
+Banyak klien (browser, mobile, desktop, layanan lain) dapat menggunakan format standar untuk bertukar data.
+
+c. **Skalabilitas dan Reusabilitas** \
+Satu sumber data bisa dipakai ulang di banyak tempat (web, app, integrasi pihak ketiga).
+
+d. **Performa dan Optimasi** \
+API memudahkan caching, pagination, partial fetching (mis. hanya fields yang perlu), sehingga mengurangi beban.
+
+e. **Keamanan dan Kontrol Akses** \
+Endpoint dapat diberi otentikasi/otorisasi terpusat untuk kontrol akses data.
+
+f. **Automasi dan Integrasi** \
+Mempermudah integrasi otomatis (cron job, pipeline, service-to-service) dan testing.
+
 ## 2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
-    
+
+JSON lebih sederhana dan ringkas dibandingkan XML karena tidak membutuhkan tag pembuka dan penutup yang panjang, sehingga ukuran data lebih kecil dan lebih efisien untuk dikirimkan melalui jaringan. Selain itu, JSON secara alami sudah sesuai dengan struktur object di JavaScript, sehingga mudah diparsing dan diproses di hampir semua bahasa pemrograman modern tanpa membutuhkan library tambahan yang kompleks. JSON juga lebih mudah dibaca manusia karena strukturnya mirip dengan dictionary atau map (key-value), sedangkan XML cenderung lebih verbose dan sulit dibaca. Karena alasan efisiensi, kemudahan penggunaan, dan dukungan luas dari berbagai framework maupun API modern, JSON jauh lebih populer dibandingkan XML.
+
 ## 3. Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?
-    
+
+Fungsi dari method **is_valid()** pada form Django adalah untuk melakukan validasi terhadap data yang dikirimkan pengguna melalui form. Method ini akan mengecek apakah data yang dimasukkan sesuai dengan aturan yang telah ditentukan pada model atau form (misalnya panjang karakter, tipe data, dan field yang wajib diisi). Jika data valid, maka kita bisa memproses dan menyimpannya ke database menggunakan form.save(). Jika tidak valid, Django akan mengembalikan error yang bisa ditampilkan kembali pada form agar pengguna mengetahui kesalahan input.
+
 ## 4. Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
-    
+
+**csrf_token** dibutuhkan saat membuat form di Django untuk melindungi aplikasi dari serangan Cross-Site Request Forgery (CSRF). Serangan ini memanfaatkan sesi login pengguna agar tanpa sadar mengeksekusi aksi berbahaya seperti menambah, menghapus, atau mengubah data melalui request palsu yang tampak sah. Jika tidak ditambahkan csrf_token, maka request berbahaya tersebut bisa dieksekusi tanpa validasi sehingga penyerang dapat memanipulasi data atau mengendalikan aksi di aplikasi.
+
 ## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-    
+
+1. **Membuat Model** \
+Saya menambahkan model Product di main/models.py dengan field seperti **name**, **price**, **description**, **category**, **is_featured**, **is_deals**, **thumbnail**, dan **product_views**. Setelah itu menjalankan python manage.py makemigrations dan python manage.py migrate agar model tersimpan di database db.sqlite3.
+
+2. **Views Sebagai Data Delivery** \
+Saya membuat 4 fungsi baru di main/views.py:
+
+a. **show_xml**:  menampilkan semua data produk dalam format XML. \
+
+b. **show_json** : menampilkan semua data produk dalam format JSON. \
+
+c. **show_xml_by_id** : menampilkan data produk tertentu (berdasarkan id) dalam format XML. \
+
+d. **show_json_by_id** : menampilkan data produk tertentu (berdasarkan id) dalam format JSON. \
+
+3. **Menambah Routing URL** \
+Saya menambahkan path untuk semua fungsi views di **main/urls.py**, termasuk juga path untuk **add_product** dan **show_product**.
+
+4. **Membuat Halaman Utama** \
+Saya membuat file main.html di main/templates untuk menampilkan daftar produk. Halaman tersebut memiliki tombol Add Product yang mengarah ke form **addpro.html** dan tombol Detail yang mengarah ke halaman detail **product_detail.html**.
+
+5. **Membuat Form Penambahan Produk** \
+Saya membuat ProductForm di main/forms.py. Selain itu, saya juga menambahkan fungsi **add_product** di **views.py** yang memproses form dengan **is_valid()**, lalu menyimpan data produk baru ke database.
+
+6. **Membuat Halaman Detail Produk** \
+Saya menambahkan fungsi **show_product** di views.py yang menampilkan detail satu produk. Fungsi tersebut juga memanggi method **increment_views()** pada model agar jumlah views bertambah setiap kali detail dibuka. Template **product_detail** pada folder templates memiliki tujuan untuk menampilkan detail produk.
+
+7. **Memanfaatkan Base Template** \
+Semua template (**main.html**, **addpro.html**, **product_detail.html**) saya buat extend dari base.html sehingga tampilan konsisten.
+
+8. **Membuat README** \
+Membuat README sebagai dokumentasi tugas.
+
 ## 6. Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
+
+Sejauh ini tidak ada. Para asdos sudah membantu mahasiswanya dengan baik.
