@@ -23,22 +23,25 @@
     </button>
 </a>
 
-{% if not shop_item %}
+<hr>
+<h1>Daftar Produk</h1>
+
+{% if not products %}
 <p>Belum ada produk yang ditambahkan</p>
 {% else %}
 
-{% for item in shop_item %}
+{% for item in products %}
 <div>
     <h2>
-        <a href="{% url 'main:show_product' product.id %}">
+        <a href="{% url 'main:show_product' item.id %}">
             {{item.name}}
         </a>
     </h2>
 
     <p>
-        <b>{{item.get_category_dipslay}}</b>
+        <b>{{item.get_category_display}}</b>
 
-        {% if item.isfeatured %}
+        {% if item.is_featured %}
         <b>Featured</b>
         {% endif %}
 
@@ -46,7 +49,7 @@
         <b>Deals</b>
         {% endif %}
 
-        <i>{{item.created_at}|date:"d M Y H:i"}</i>
+        <i>{{item.created_at|date:"d M Y H:i"}}</i>
         | Views: {{item.product_views}}
     </p>
 
@@ -55,19 +58,21 @@
     <br />
     {% endif %}
 
+    <p><b>Harga:</b> Rp{{ item.price }}</p>
+
     <p>{{item.description|truncatewords:25}}...</p>
 
     <p>
-        <a href="{% url 'main:show_product' product.id %}">
+        <a href="{% url 'main:show_product' item.id %}">
             <button>Details</button>
         </a>
     </p>
 </div>
 
-<hr>
 
 {% endfor %}
 {% endif %}
 
-{% endblock content %}
+{% endblock %}
+
 

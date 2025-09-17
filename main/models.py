@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 
-class product(models.Model):
+class Product(models.Model):
     CATEGORY_CHOICES = [
         ('baju', 'Baju'),
         ('sepatu', 'Sepatu'),
@@ -18,6 +18,9 @@ class product(models.Model):
     thumbnail = models.URLField(blank=True, null=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='update')
     is_featured = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    product_views = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.name
