@@ -5,29 +5,37 @@
     <a href="{% url 'main:show_main' %}">
         <button>Back to Product List</button>
     </a>
-
-    <h1>{{product.name}}</h1>
-    <p>
-        <b>{{product.get_category_dipslay}}</b>
-        
-        {% if product.is_featured %} |
-        <b>Featured</b>
-        {% endif %}
-
-        {% if product.is_deals %} |
-        <b>Deals</b>
-        {% endif %} |
-
-        <i>{{ product.created_at|date:"d M Y, H:i" }}</i>
-        
-        | Views : {{product.product_views}}
-    </p>
 </p>
 
+<h1>{{ product.name }}</h1>
+
+<p>
+    <b>{{ product.get_category_display }}</b> |
+    <i>{{ product.created_at|date:"d M Y, H:i" }}</i> |
+    Views : {{ product.product_views }}
+    
+    {% if product.is_featured %} |
+        <b>Featured</b>
+    {% endif %}
+
+    {% if product.is_deals %} |
+        <b>Deals</b>
+    {% endif %}
+</p>
+
+<!-- Tambahkan foto -->
 {% if product.thumbnail %}
-<img src="{{product.thumbnail}}" alt="product thumbnail" width="300">
-<br /><br />
+    <img src="{{ product.thumbnail }}" alt="product thumbnail" width="400">
+    <br><br>
 {% endif %}
 
-<p>{{product.description}}</p>
+<!-- Tambahkan deskripsi -->
+<p>{{ product.description }}</p>
+
+{% if product.user %}
+    <p><i>Author: {{ product.user.username }}</i></p>
+{% else %}
+    <p><i>Author: Anonymous</i></p>
+{% endif %}
+
 {% endblock content %}

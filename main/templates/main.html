@@ -16,6 +16,7 @@
 <h3>{{name}}</h3>
 
 <p>Welcome to El Football Shop and Happy Shopping/Selling :D</p>
+<h5>Sesi terakhir login: {{ last_login }}</h5>
 
 <a href="{% url 'main:add_product' %}">
     <button>
@@ -23,7 +24,19 @@
     </button>
 </a>
 
+<a href="{% url 'main:logout' %}">
+    <button>Logout</button>
+</a>
+
+<a href="?filter=all">
+    <button type="button">My Wishlist</button>
+</a>
+<a href="?filter=my">
+    <button type="button">My Order</button>
+</a> 
+
 <hr>
+
 <h1>Daftar Produk</h1>
 
 {% if not products %}

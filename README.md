@@ -269,9 +269,13 @@ Membuat README sebagai dokumentasi tugas.
 
 Sejauh ini tidak ada. Para asdos sudah membantu mahasiswanya dengan baik.
 
+<<<<<<< HEAD
 
 ## Screenshot Postman
 ![alt text](xml.png)
 ![alt text](json.png)
 ![alt text](xml_id.png)
 ![alt text](json_id.png)
+=======
+## 7. Screenshot Postman untuk fungsi show_xml, show_json, show_xml_by_id, show_json_by_id
+>>>>>>> 1150e4b (few changes on models, urls, views, and added few html file)
