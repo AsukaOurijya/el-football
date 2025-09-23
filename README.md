@@ -462,7 +462,7 @@ Membuat 2 akun pengguna \
 Menambah 3 Dummy Product \
 ![alt text](tampilan_produk.png)
 
-9.  **Menambah path di urls.py**
+9.  **Menambah path di urls.py** 
 
 urls.py
 ```
