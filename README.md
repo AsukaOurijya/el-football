@@ -455,6 +455,12 @@ Tampilan username akan berubah jika login dengan akun yang berbeda. Contoh usern
 ![alt text](ganti_akun.png)
 
 8. **Membuat 2 akun pengguna dan 3 dummy product di Local**
+Membuat 2 akun pengguna \
+![alt text](user_kdot.png)
+![alt text](ganti_akun.png)
+
+Menambah 3 Dummy Product \
+![alt text](tampilan_produk.png)
 
 9.  **Menambah path di urls.py**
 
