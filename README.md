@@ -336,10 +336,10 @@ e. **SIGNING** pada Django dapat menandatangani cookie (django.core.signing) aga
 
 ## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial). 
 
-1. Struktur Proyek \
+1. **Struktur Proyek** \
 ![alt text](direktori_tugas4.png)
 
-2. Menghubungkan Product dengan User
+2. **Menghubungkan Product dengan User**
 ```
 from django.contrib.auth.models import User
 ```
@@ -351,14 +351,14 @@ class Product(models.Model):
 ```
 Menambah variable user di dalam model Product
 
-3. Membuat Fitur Registrasi 
+3. **Membuat Fitur Registrasi** 
 
 views.py
 ```
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 ```
-mengimpor modul UserCreationForm dan messages
+Mengimpor modul UserCreationForm dan messages
 
 ```
 def register(request):
@@ -410,17 +410,17 @@ Membuat register.html
 
 {% endblock content %}
 ```
-4. Membuat Fitur Login dan Logout
+4. **Membuat Fitur Login dan Logout**
 
-5. Menanmpilkan username dan last_login di halaman utama
+5. **Menanmpilkan username dan last_login di halaman utama**
 
-6. Membuat 2 akun pengguna dan 3 dummy product
+6. **Membuat 2 akun pengguna dan 3 dummy product**
 
-7. Menambah path di urls.py
+7. **Menambah path di urls.py**
 
-8. Pengaturan keamanan cookie di settings.py
+8. **Pengaturan keamanan cookie di settings.py**
 
-9.  Melakukan Migrasi 
+9.  **Melakukan Migrasi** 
     
 ```
 python manage.py makemigrations
@@ -430,4 +430,4 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-10. Membuat Readme sebagai Dokumentasi Proyek
+10. **Membuat Readme sebagai Dokumentasi Proyek**
