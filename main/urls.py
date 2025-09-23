@@ -11,7 +11,7 @@ urlpatterns = [
     path('json/<str:news_id>/', show_json_by_id, name='show_json_by_id'),
     path('add_product/', add_product, name='add_product'),
     path("product/<uuid:id>/", show_product, name="show_product"),
-    path('register/', register, name='register'),
-    path('login/', login_user, name='login'),
-    path('logout/', logout_user, name='logout'),
+    path('register', register, name='register'),
+    path('login', login_user, name='login'),
+    path('logout', logout_user, name='logout'),
 ]
