@@ -375,52 +375,47 @@ def register(request):
 ```
 Mengimplementasi penggunaan kedua modul
 
-Membuat register.html
+Setelah itu, saya membuat register.html sebagai halaman register. \
+![alt text](register_page.png)
+
+4. **Membuat Fitur Login**
+Mengimpor module login di views.py
 ```
-{% extends 'base.html' %}
-
-{% block meta %}
-<title>Register</title>
-{% endblock meta %}
-
-{% block content %}
-
-<div>
-  <h1>Register</h1>
-
-  <form method="POST">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-      <tr>
-        <td></td>
-        <td><input type="submit" name="submit" value="Daftar" /></td>
-      </tr>
-    </table>
-  </form>
-
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-</div>
-
-{% endblock content %}
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import authenticate, login
 ```
-4. **Membuat Fitur Login dan Logout**
 
-5. **Menanmpilkan username dan last_login di halaman utama**
+Membuat fungsi login_user di views.py
+```
+def login_user(request):
+   if request.method == 'POST':
+      form = AuthenticationForm(data=request.POST)
 
-6. **Membuat 2 akun pengguna dan 3 dummy product**
+      if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('main:show_main')
 
-7. **Menambah path di urls.py**
+   else:
+      form = AuthenticationForm(request)
+   context = {'form': form}
+   return render(request, 'login.html', context)
+```
 
-8. **Pengaturan keamanan cookie di settings.py**
+Setelah itu, saya membuat login.html sebagai halaman login. \
+![alt text](login_page.png)
 
-9.  **Melakukan Migrasi** 
+5. **Membuat Fitur Logout**
+
+6. **Menanmpilkan username dan last_login di halaman utama**
+
+7. **Membuat 2 akun pengguna dan 3 dummy product**
+
+8. **Menambah path di urls.py**
+
+9.  **Pengaturan keamanan cookie di settings.py**
+
+10.  **Melakukan Migrasi** 
     
 ```
 python manage.py makemigrations
@@ -430,4 +425,4 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-10. **Membuat Readme sebagai Dokumentasi Proyek**
+11. **Membuat Readme sebagai Dokumentasi Proyek**
