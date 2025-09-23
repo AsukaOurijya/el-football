@@ -21,9 +21,12 @@ def show_main(request):
     else:
         products = Product.objects.filter(user=request.user)
 
+    full_name = request.user.get_full_name()
+    display_name = full_name if full_name.strip() else request.user.username
+
     context = {
         'npm': '2406431510',
-        'name' : ' Muhammad Azka Awliya',
+        'name' : display_name,
         'class' : 'PBP C',
         'products' : products,
         'last_login': request.COOKIES.get('last_login', 'Never'),

@@ -337,9 +337,11 @@ e. **SIGNING** pada Django dapat menandatangani cookie (django.core.signing) aga
 ## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial). 
 
 1. **Struktur Proyek** \
+
 ![alt text](direktori_tugas4.png)
 
 2. **Menghubungkan Product dengan User**
+
 ```
 from django.contrib.auth.models import User
 ```
@@ -379,6 +381,7 @@ Setelah itu, saya membuat register.html sebagai halaman register. \
 ![alt text](register_page.png)
 
 4. **Membuat Fitur Login**
+ 
 Mengimpor module login di views.py
 ```
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -405,17 +408,102 @@ def login_user(request):
 Setelah itu, saya membuat login.html sebagai halaman login. \
 ![alt text](login_page.png)
 
-5. **Membuat Fitur Logout**
+6. **Membuat Fitur Logout**
 
-6. **Menanmpilkan username dan last_login di halaman utama**
+Mengimpor module logout di views.py
+```
+from django.contrib.auth import authenticate, login, logout
+```
 
-7. **Membuat 2 akun pengguna dan 3 dummy product**
+Membuat fungsi logout_user di views.py
+```
+def logout_user(request):
+    logout(request)
+    return redirect('main:login')
+```
 
-8. **Menambah path di urls.py**
+Lalu saya menambah button logout pada halaman utama
+```
+...
+<a href="{% url 'main:logout' %}">
+  <button>Logout</button>
+</a>
+...
+```
 
-9.  **Pengaturan keamanan cookie di settings.py**
+![alt text](button_logout.png)
 
-10.  **Melakukan Migrasi** 
+\Mengimpor fungsi logout_user ke urls.py
+```
+from main.views import logout_user
+```
+
+Menambah path url ke urlpatterns
+```
+urlpatterns = [
+   ...
+   path('logout/', logout_user, name='logout'),
+]
+```
+
+7. **Menampilkan username dan last_login di halaman utama**
+
+Berikut adalah halaman utama yang menampilkan usernama user setelah login. Sebagai contoh, username yang digunakan adalah 'kendricklamar'. \
+![alt text](halaman_utama.png)
+
+Tampilan username akan berubah jika login dengan akun yang berbeda. Contoh username: 'playboicarti' \
+![alt text](ganti_akun.png)
+
+8. **Membuat 2 akun pengguna dan 3 dummy product di Local**
+
+9.  **Menambah path di urls.py**
+
+urls.py
+```
+from django.urls import path, include
+from main.views import show_main, show_xml, show_json, show_xml_by_id, show_json_by_id, add_product, show_product, register, login_user, logout_user
+
+app_name = 'main'
+
+urlpatterns = [
+    ...
+    path('register/', register, name='register'),
+    path('login/', login_user, name='login'),
+    path('logout/', logout_user, name='logout'),
+]
+```
+
+10.  **Pengaturan keamanan cookie di settings.py**
+
+Mengimpor beberapa module ke views.py
+```
+import datetime
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+```
+
+Mengubah isi dari fungsi login_user dengan menyimpan cookie baru bernama last_login
+```
+...
+if form.is_valid():
+    user = form.get_user()
+    login(request, user)
+    response = HttpResponseRedirect(reverse("main:show_main"))
+    response.set_cookie('last_login', str(datetime.datetime.now()))
+    return response
+...
+```
+
+Menambahkan last_login ke dalam context
+```
+context = {
+    ...
+    'last_login': request.COOKIES.get('last_login', 'Never')
+    ..
+}
+```
+
+11.   **Melakukan Migrasi** 
     
 ```
 python manage.py makemigrations
@@ -426,3 +514,4 @@ python manage.py migrate
 ```
 
 11. **Membuat Readme sebagai Dokumentasi Proyek**
+Setelah semua checklist selesai, saya mulai menulis dokumentasi proyek di berkas README.md
