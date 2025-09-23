@@ -306,18 +306,18 @@ b. Perlu membuat/memodifikasi form custom jika membutuhkan autentifikasi lebih k
 
 ## 3. Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web? 
 
-**Kelebihan Session**
+**Kelebihan Session** \
 Disimpan di sisi server sehingga lebih aman karena data sensitif tidak dikirim ke sisi klien. Session memiliki keunggulan untuk dapat menyimpan data dalam jumlah lebih besar. Selain itu, dukungan Django dalam berbagai backend untuk session database, cache, file, dan lain sebagainya, menjadikan session sebagai sistem autentifikasi Django yang terintegrasi.
 
 
-**Kekurangan Session**
+**Kekurangan Session** \
 Karena data disimpan di sisi server dan biasanya data yang disimpan memiliki ukuran yang cukup besar, penggunaan session juga dapat membebani server. Bahkan, jika server tidak scalable, dapat menyebabkan inkonsistensi.
 
 
-**Kelebihan Cookies**
+**Kelebihan Cookies** \
 Disimpan di sisi klien (browser) dan data yang digunakan seperti preferensi user, remember-me token, session ID biasanya relatif kecil sehingga tidak membebani server. Selain itu, cookies memiliki jangka penyimpanan yang cukup lama. 
 
-**Kekurangan Cookies**
+**Kekurangan Cookies** \
 Walaupun tidak membebani server karena ukuran datanya yang cukup kecil, hal ini juga disebabkan karena terbatasnya ukuran (4KB per cookie). Selain itu, cookie tergolong rentan dimodifikasi user dan bisa dicuri lewat serangan XSS sehingga tidak aman untuk data sensitif, mengingat cookie menyimpan data kecil berupa detail user dan data disimpan di sisi klien.
 
 ## 4. Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut? 
