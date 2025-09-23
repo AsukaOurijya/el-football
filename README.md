@@ -335,3 +335,99 @@ d. **CSRF_COOKIE_SECURE** diset ke True. Memastikan CSRF token hanya dikirim lew
 e. **SIGNING** pada Django dapat menandatangani cookie (django.core.signing) agar tidak bisa dimodifikasi sembarangan.
 
 ## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial). 
+
+1. Struktur Proyek
+![alt text](direktori_tugas4.png)
+
+2. Menghubungkan Product dengan User
+```
+from django.contrib.auth.models import User
+```
+Mengimpor model User
+
+```
+class Product(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+```
+Menambah variable user di dalam model Product
+
+3. Membuat Fitur Registrasi 
+
+views.py
+```
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+```
+mengimpor modul UserCreationForm dan messages
+
+```
+def register(request):
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been successfully created!')
+            return redirect('main:login')
+    context = {'form':form}
+    return render(request, 'register.html', context)
+```
+Mengimplementasi penggunaan kedua modul
+
+Membuat register.html
+```
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Register</title>
+{% endblock meta %}
+
+{% block content %}
+
+<div>
+  <h1>Register</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+      <tr>
+        <td></td>
+        <td><input type="submit" name="submit" value="Daftar" /></td>
+      </tr>
+    </table>
+  </form>
+
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+
+{% endblock content %}
+```
+4. Membuat Fitur Login dan Logout
+
+5. Menanmpilkan username dan last_login di halaman utama
+
+6. Membuat 2 akun pengguna dan 3 dummy product
+
+7. Menambah path di urls.py
+
+8. Pengaturan keamanan cookie di settings.py
+
+9.  Melakukan Migrasi 
+    
+```
+python manage.py makemigrations
+```
+
+```
+python manage.py migrate
+```
+
+10. Membuat Readme sebagai Dokumentasi Proyek
