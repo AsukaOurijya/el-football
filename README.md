@@ -321,5 +321,17 @@ Disimpan di sisi klien (browser) dan data yang digunakan seperti preferensi user
 Walaupun tidak membebani server karena ukuran datanya yang cukup kecil, hal ini juga disebabkan karena terbatasnya ukuran (4KB per cookie). Selain itu, cookie tergolong rentan dimodifikasi user dan bisa dicuri lewat serangan XSS sehingga tidak aman untuk data sensitif, mengingat cookie menyimpan data kecil berupa detail user dan data disimpan di sisi klien.
 
 ## 4. Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut? 
+Secara default, penggunaan cookies tidak sepenuhnya aman karena berpotensi dicuri via XSS,disadap melalui Man-in-the-Middle dan dimodifikasi oleh user.
+
+Namun, Django memiliki beberapa solusi untuk menangani keamanan cookie dan meminimalisir terjadinya insiden pada cookie, seperti:
+a. **SESSION_COOKIE_HTTPONLY** diset ke True. Mencegah JavaScript membaca cookie.
+
+b. **SESSION_COOKIE_SECURE** diset ke True. Cookie hanya dikirim lewat HTTPS.
+
+c. **CSRF_COOKIE_HTTPONLY** diset ke True. Mencegah akses CSRF cookie dari JS.
+
+d. **CSRF_COOKIE_SECURE** diset ke True. Memastikan CSRF token hanya dikirim lewat HTTPS.
+
+e. **SIGNING** pada Django dapat menandatangani cookie (django.core.signing) agar tidak bisa dimodifikasi sembarangan.
 
 ## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial). 
