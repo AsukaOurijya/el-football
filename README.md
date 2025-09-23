@@ -279,6 +279,8 @@ Sejauh ini tidak ada. Para asdos sudah membantu mahasiswanya dengan baik.
 # Esai Tugas 4
 
 ## 1. Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya. \
+AuthentificationForm adalah form bawaan Django yang digunakan untuk proses login user. Form ini ada di modul django.contrib.auth.forms. Modul ini bekerja melakukan pencocokan username dan password yang dimasukkan user dengan data pada model User. Modul AuthetificationForm sendiri memiliki fitur salah satunya adalah validasi yang dilakukan secara otomatis.
+
 
 ## 2. Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut? \
 
