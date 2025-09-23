@@ -336,7 +336,7 @@ e. **SIGNING** pada Django dapat menandatangani cookie (django.core.signing) aga
 
 ## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial). 
 
-1. Struktur Proyek
+1. Struktur Proyek \
 ![alt text](direktori_tugas4.png)
 
 2. Menghubungkan Product dengan User
