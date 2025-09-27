@@ -26,10 +26,11 @@ def show_main(request):
 
     context = {
         'npm': '2406431510',
-        'name' : display_name,
+        'name' : 'Muhammad Azka Awliya',
         'class' : 'PBP C',
-        'products' : products,
+        'product_list' : products,
         'last_login': request.COOKIES.get('last_login', 'Never'),
+        'display_name' : display_name
     }
 
     return render(request, "main.html", context)
@@ -55,7 +56,7 @@ def show_json_by_id(request, shop_id):
     return HttpResponse(json_data, content_type="application/json")
 
 def add_product(request):
-    form = ProductForm(request.POST or None)
+    form = ProductForm(request.POST or None, request.FILES or None)
 
     if form.is_valid() and request.method == "POST":
         product_entry = form.save(commit = False)
@@ -72,7 +73,11 @@ def add_product(request):
 @login_required(login_url='/login')
 def show_product(request, id):
     products = get_object_or_404(Product, pk=id)
-    products.increment_views()
+
+    try:
+        products.increment_views()
+    except Exception:
+        pass
 
     context = {
         'products' : products,
