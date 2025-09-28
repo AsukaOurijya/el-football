@@ -34,12 +34,12 @@
     </div>
 
     {% if not product_list %}
-      <div class="bg-white rounded-lg border border-gray-200 p-12 text-center">
+      <div class="bg-[#1e2b40] rounded-lg border border-gray-200 p-12 text-center">
         <div class="w-32 h-32 mx-auto mb-4">
           <img src="{% static 'image/emu_otori.png' %}" alt="No product available" class="w-full h-full object-contain">
         </div>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No product found</h3>
-        <p class="text-gray-500 mb-6">Be the first to sell product!</p>
+        <h3 class="text-lg font-medium text-white mb-2">No product found</h3>
+        <p class="text-[#94bef2] mb-6">Add your First Product!</p>
         <a href="{% url 'main:add_product' %}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
           Add Product
         </a>
