@@ -71,11 +71,23 @@
 
                     <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
                         <p>
-                        {% if user.is_authenticated and news.user == user %}
-                        <a href="{% url 'main:edit_news' news.pk %}">
+                        {% if user.is_authenticated and product.user == user %}
+                        <a href="{% url 'main:edit_product' product.pk %}">
                         <button>
                             Edit
                         </button>
+                        </a>
+
+                        <a href="{% url 'main:delete_product' product.pk %}">
+                            <button>
+                                Delete
+                            </button>
+                        </a>
+
+                        <a href="{% url 'main:show_product' product.pk %}">
+                            <button>
+                                Details
+                            </button>
                         </a>
                         {% endif %}
                         </p>
