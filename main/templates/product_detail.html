@@ -2,116 +2,114 @@
 {% load static %}
 
 {% block meta %}
-<title>{{ product.title }} - El Football</title>
+<title>{{ product.name|default:"Product" }} - El Football</title>
 {% endblock meta %}
 
 {% block content %}
-<div class="bg-gray-50 w-full min-h-screen">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        <!-- Back Navigation -->
-        <div class="mb-6">
-            <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                ← Back to product
-            </a>
-        </div>
-        
-        <!-- Article -->
-        <article class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            
-            <!-- Header -->
-            <div class="p-6 sm:p-8">
-                <div class="flex flex-wrap items-center gap-2 mb-4">
-                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-blue-600 text-white">
-                        {{ product.get_category_display }}
-                    </span>
-                    {% if product.is_featured %}
-                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800">
-                            Featured
-                        </span>
-                    {% endif %}
-                    {% if product.is_product_hot %}
-                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-red-100 text-red-800">
-                            Hot
-                        </span>
-                    {% endif %}
-                </div>
-                
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
-                    {{ product.title }}
-                </h1>
-                
-                <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
-                    <time datetime="{{ product.created_at|date:'c' }}">
-                        {{ product.created_at|date:"M j, Y g:i A" }}
-                    </time>
-                    <span>{{ product.product_views }} views</span>
-                </div>
-            </div>
+<div class="bg-[#1e2b40] w-full min-h-screen">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-            <!-- Featured Image -->
-            {% if product.thumbnail %}
-                <div class="px-6 sm:px-8">
-                    <img src="{{ product.thumbnail }}" 
-                            alt="{{ product.title }}" 
-                            class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
-                </div>
+    <!-- Back -->
+    <div class="mb-6">
+      <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+        ← Back to product
+      </a>
+    </div>
+
+    <!-- Card -->
+    <article class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      <!-- Header -->
+      <div class="p-6 sm:p-8">
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-blue-600 text-white">
+            {{ product.get_category_display }}
+          </span>
+          {% if product.is_featured %}
+            <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800">Featured</span>
+          {% endif %}
+          {% if product.is_product_hot %}
+            <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-red-100 text-red-800">Hot</span>
+          {% endif %}
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-3">
+          {{ product.name }}
+        </h1>
+
+        <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
+          <time datetime="{{ product.created_at|date:'c' }}">
+            {{ product.created_at|date:"M j, Y g:i A" }}
+          </time>
+          <span>•</span>
+          <span>{{ product.product_views|default:0 }} views</span>
+        </div>
+      </div>
+
+      <!-- Image (URLField) -->
+      {% if product.thumbnail %}
+        <div class="px-6 sm:px-8">
+          {# karena thumbnail adalah URLField, gunakan langsung product.thumbnail #}
+          <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
+        </div>
+      {% else %}
+        {# fallback image statis #}
+        <div class="px-6 sm:px-8">
+          <img src="{% static 'image/product-placeholder.png' %}" alt="No image" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
+        </div>
+      {% endif %}
+
+      <!-- Content -->
+      <div class="p-6 sm:p-8">
+        <div class="prose prose-lg max-w-none">
+          <div class="text-gray-900 leading-relaxed whitespace-pre-line text-base sm:text-lg mb-4">
+            {{ product.name }}
+          </div>
+
+          <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg mb-4 font-semibold text-xl">
+            {% if product.price %}
+              Rp. {{ product.price}}
+            {% else %}
+              Rp. -
+            {% endif %}
+          </div>
+
+          <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg mb-4">
+            {% if product.description %}
+              {{ product.description }}
+            {% else %}
+              No description provided.
+            {% endif %}
+          </div>
+
+          <div class="flex items-center gap-3 mt-4">
+            {% if product.pk %}
+              <a href="{% url 'main:show_product' product.pk %}" class="px-4 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50">Details</a>
             {% endif %}
 
-            <!-- Content -->
-            <div class="p-6 sm:p-8">
-                <div class="prose prose-lg max-w-none">
-                    <div class="text-gray-900 leading-relaxed whitespace-pre-line text-base sm:text-lg">
-                        {{ product.name }}
-                    </div>
+            {% if user.is_authenticated and product.user == user %}
+              <a href="{% url 'main:edit_product' product.pk %}" class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">Edit</a>
+              <a href="{% url 'main:delete_product' product.pk %}" class="px-4 py-2 bg-red-100 text-red-700 rounded-md text-sm hover:bg-red-200">Delete</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
 
-                    <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
-                        Rp. {{ product.price }}
-                    </div>
-
-                    <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
-                        <p>
-                        {% if user.is_authenticated and product.user == user %}
-                        <a href="{% url 'main:edit_product' product.pk %}">
-                        <button>
-                            Edit
-                        </button>
-                        </a>
-
-                        <a href="{% url 'main:delete_product' product.pk %}">
-                            <button>
-                                Delete
-                            </button>
-                        </a>
-
-                        <a href="{% url 'main:show_product' product.pk %}">
-                            <button>
-                                Details
-                            </button>
-                        </a>
-                        {% endif %}
-                        </p>
-                    </div>
-
-                </div>
+      <!-- Author -->
+      <div class="border-t border-gray-200 p-6 sm:p-8 bg-gray-50">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-medium text-gray-900">
+              {% if product.user %}
+                <p>Author: {{ product.user.username }}</p>
+              {% else %}
+                <p>Author: Anonymous</p>
+              {% endif %}
             </div>
-
-            <!-- Author Info -->
-            <div class="border-t border-gray-200 p-6 sm:p-8 bg-gray-50">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <div class="font-medium text-gray-900">
-                            {% if product.user %}
-                                <p>Author: {{ product.user.username }}</p>
-                            {% else %}
-                                <p>Author: Anonymous</p>
-                            {% endif %}
-                        </div>
-                        <p class="text-sm text-gray-500">Author</p>
-                    </div>
-                </div>
-            </div>
-        </article>
-    </div>
+            <p class="text-sm text-gray-500">Author</p>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
 </div>
 {% endblock content %}
