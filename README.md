@@ -521,3 +521,61 @@ python manage.py migrate
 
 11. **Membuat Readme sebagai Dokumentasi Proyek**
 Setelah semua checklist selesai, saya mulai menulis dokumentasi proyek di berkas README.md
+
+# Esai Tugas 5
+
+## 1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+Jika beberapa CSS selector menarget elemen yang sama, prioritas ditentukan oleh specificity lalu source order. Urutannya sebagai berikut: 
+
+1. aturan !important (paling kuat) \
+2. inline style (style="...")  \
+3. ID selectors (#id) \
+4. class/attribute/pseudo-class selectors (.kelas, [attr], :hover) \
+5. element/pseudo-element selectors (div, p, ::after);  \
+
+bila specificity sama, yang muncul terakhir di stylesheet yang dimuat.
+
+## 2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+
+Responsive design penting karena pengguna mengakses web dari perangkat dan ukuran layar berbeda — desain responsif memastikan konten terbaca, kegunaan (UX), performa, dan SEO tetap baik tanpa membuat versi terpisah; contoh aplikasi yang sudah responsif: Google, Facebook, Tokopedia — tata letak dan navigasi menyesuaikan layar; contoh yang belum: banyak aplikasi internal/legacy atau situs berita lama yang dibuat hanya untuk desktop, sehingga pada ponsel tampilannya terpotong, tombol sulit diklik, dan navigasi tidak usable.
+
+## 3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+
+**Margin** : ruang di luar border yang memberi jarak antar-elemen.
+Contoh Penggunaan: 
+
+```
+margin: 16px;
+```
+
+**Border** : garis pembatas yang mengelilingi padding dan konten.
+Contoh Penggunaan:
+
+```
+border: 1px solid #000;
+```
+
+**Padding** : ruang di dalam border antara konten dan border.
+Contoh Penggunaan:
+
+```
+padding: 8px 12px;
+```
+
+## 4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+**Flexbox**: dibuat untuk layout satu dimensi (baris atau kolom) sehingga bagus untuk navbar, baris tombol, alignment dan distribusi ruang dengan justify-content/align-items.
+Implementasi:
+
+```
+display: flex;
+```
+
+**Grid**: untuk layout dua dimensi (baris + kolom) sehingga cocok buat tata letak halaman, gallery, dashboard dengan grid-template-rows/columns.
+Implementasi:
+
+```
+display: grid;
+```
+
+## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
