@@ -528,11 +528,11 @@ Setelah semua checklist selesai, saya mulai menulis dokumentasi proyek di berkas
 
 Jika beberapa CSS selector menarget elemen yang sama, prioritas ditentukan oleh specificity lalu source order. Urutannya sebagai berikut: 
 
-1. aturan !important (paling kuat) \
-2. inline style (style="...")  \
-3. ID selectors (#id) \
-4. class/attribute/pseudo-class selectors (.kelas, [attr], :hover) \
-5. element/pseudo-element selectors (div, p, ::after);  \
+1. aturan !important (paling kuat) 
+2. inline style (style="...")  
+3. ID selectors (#id) 
+4. class/attribute/pseudo-class selectors (.kelas, [attr], :hover) 
+5. element/pseudo-element selectors (div, p, ::after);  
 
 bila specificity sama, yang muncul terakhir di stylesheet yang dimuat.
 
@@ -542,21 +542,21 @@ Responsive design penting karena pengguna mengakses web dari perangkat dan ukura
 
 ## 3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
 
-**Margin** : ruang di luar border yang memberi jarak antar-elemen.
+**Margin** : ruang di luar border yang memberi jarak antar-elemen. \
 Contoh Penggunaan: 
 
 ```
 margin: 16px;
 ```
 
-**Border** : garis pembatas yang mengelilingi padding dan konten.
+**Border** : garis pembatas yang mengelilingi padding dan konten. \
 Contoh Penggunaan:
 
 ```
 border: 1px solid #000;
 ```
 
-**Padding** : ruang di dalam border antara konten dan border.
+**Padding** : ruang di dalam border antara konten dan border. \
 Contoh Penggunaan:
 
 ```
@@ -564,14 +564,14 @@ padding: 8px 12px;
 ```
 
 ## 4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
-**Flexbox**: dibuat untuk layout satu dimensi (baris atau kolom) sehingga bagus untuk navbar, baris tombol, alignment dan distribusi ruang dengan justify-content/align-items.
+**Flexbox**: dibuat untuk layout satu dimensi (baris atau kolom) sehingga bagus untuk navbar, baris tombol, alignment dan distribusi ruang dengan justify-content/align-items. \
 Implementasi:
 
 ```
 display: flex;
 ```
 
-**Grid**: untuk layout dua dimensi (baris + kolom) sehingga cocok buat tata letak halaman, gallery, dashboard dengan grid-template-rows/columns.
+**Grid**: untuk layout dua dimensi (baris + kolom) sehingga cocok buat tata letak halaman, gallery, dashboard dengan grid-template-rows/columns. \
 Implementasi:
 
 ```
