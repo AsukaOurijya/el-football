@@ -11,7 +11,8 @@ import datetime
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
+from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
@@ -191,3 +192,70 @@ def add_product_entry_ajax(request):
     new_product.save()
 
     return HttpResponse(b"CREATED", status=201)
+
+@require_http_methods(["POST"])
+@login_required
+def update_product_entry_ajax(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if product.user != request.user:
+        return JsonResponse({'success': False, 'message': 'Forbidden'}, status=403)
+
+    name = (request.POST.get('name') or '').strip()
+    description = (request.POST.get('description') or '').strip()
+    price = (request.POST.get('price') or '').strip()
+    category = (request.POST.get('category') or '').strip()
+    thumbnail = (request.POST.get('thumbnail') or '').strip()
+    is_featured = request.POST.get('is_featured') in ('on', 'true', '1')
+
+    errors = {}
+    if not name:
+        errors['name'] = 'Name is required.'
+    if not description:
+        errors['description'] = 'Description is required.'
+    try:
+        price_val = float(price) if price else 0
+    except ValueError:
+        errors['price'] = 'Price must be a number.'
+
+    if errors:
+        return JsonResponse({'success': False, 'errors': errors, 'message': 'Validation error'}, status=400)
+
+    product.name = name
+    product.description = description
+    product.price = price_val
+    product.category = category
+    product.thumbnail = thumbnail
+    product.is_featured = is_featured
+    product.save()
+
+    return JsonResponse({'success': True, 'data': {
+        'id': product.pk,
+        'name': product.name,
+        'description': product.description,
+        'price': str(product.price),
+        'category': product.category,
+        'thumbnail': product.thumbnail,
+        'is_featured': product.is_featured,
+    }})
+
+def product_detail_json(request, pk):
+    """
+    Return JSON details for a product; used by AJAX when opening edit modal.
+    """
+    try:
+        p = Product.objects.get(pk=pk)
+    except Product.DoesNotExist:
+        return JsonResponse({'detail': 'Not found'}, status=404)
+
+    data = {
+        'id': p.pk,
+        'name': p.name,
+        'description': p.description,
+        'price': str(p.price) if getattr(p, 'price', None) is not None else '',
+        'category': p.category,
+        'thumbnail': p.thumbnail,
+        'is_featured': bool(p.is_featured),
+        'user_id': p.user.id if p.user else None,
+        'created_at': p.created_at.isoformat() if getattr(p, 'created_at', None) else None,
+    }
+    return JsonResponse(data)

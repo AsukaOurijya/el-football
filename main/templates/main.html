@@ -20,6 +20,14 @@
         Add Product by AJAX
       </button>
 
+      <button onclick="(function(){ if(allproductData && allproductData.length) openEditModal(allproductData[0]); else showModal(); })()" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold outline outline-2 outline-blue-600 outline-offset-[-2px] rounded-md hover:bg-blue-600 hover:text-white transition-colors mb-4">
+        Edit Product by AJAX
+      </button>
+
+      <button onclick="fetchproductFromServer" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold outline outline-2 outline-blue-600 outline-offset-[-2px] rounded-md hover:bg-blue-600 hover:text-white transition-colors mb-4">
+        Refresh
+      </button>
+
     <!-- Filter Section -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 bg-[#2e3c4d] rounded-lg border border-gray-200 p-4">
       <div class="flex space-x-3 mb-4 sm:mb-0">
@@ -79,6 +87,10 @@
 // Configuration
 const PRODUCT_API_ENDPOINT = "{% url 'main:show_json' %}";
 const CURRENT_USER_ID = "{{ user.id|default_if_none:'' }}";
+// template placeholders (pastikan ini di template, bukan file .js statis)
+const UPDATE_PRODUCT_ENDPOINT_TEMPLATE = "{% url 'main:update_product_ajax' '00000000-0000-0000-0000-000000000000' %}";
+const PRODUCT_DETAIL_ENDPOINT_TEMPLATE = "{% url 'main:product_detail_json' '00000000-0000-0000-0000-000000000000' %}";
+
 
 // DOM Elements
 const loadingSpinner = document.getElementById('loading');
@@ -130,11 +142,13 @@ function getReadableCategoryName(categoryCode) {
 }
 
 // Create product card element
+// Create product card element (REPLACE existing buildproductCardElement function)
 function buildproductCardElement(productItem) {
   const articleElement = document.createElement('article');
   articleElement.className = 'bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-300 overflow-hidden flex flex-col h-full';
 
   const detailLink = `{% url 'main:show_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.id);
+  // keep these if you still use them elsewhere
   const editLink = `{% url 'main:edit_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.id);
   const deleteLink = `{% url 'main:delete_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.id);
 
@@ -149,7 +163,7 @@ function buildproductCardElement(productItem) {
   const isHot = productItem.product_views > 20;
 
   const thumbnailHtml = productItem.thumbnail 
-    ? `<img src='${productItem.thumbnail}' alt='${productItem.title}' class='w-full h-full object-cover'>` 
+    ? `<img src='${productItem.thumbnail}' alt='${productItem.title || productItem.name}' class='w-full h-full object-cover'>` 
     : `<div class='w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center'></div>`;
 
   const featuredBadge = isFeatured 
@@ -159,12 +173,8 @@ function buildproductCardElement(productItem) {
     ? `<span class='inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800'>Hot</span>` 
     : '';
 
-  const editDeleteButtons = CURRENT_USER_ID && Number(CURRENT_USER_ID) === Number(productItem.user_id)
-    ? `<div class='flex space-x-2'>
-        <a href='${editLink}' class='text-gray-600 hover:text-gray-700 text-sm transition-colors'>Edit</a>
-        <a href='${deleteLink}' class='text-red-600 hover:text-red-700 text-sm transition-colors' onclick='return confirm("Are you sure you want to delete this article?")'>Delete</a>
-      </div>`
-    : '';
+  // placeholder div for actions; we'll populate it with DOM buttons below
+  const actionsPlaceholder = `<div id="card-actions-${productItem.id}" class="flex space-x-2"></div>`;
 
   const completeCardHtml = `
     <div class="aspect-[16/9] relative overflow-hidden">
@@ -184,19 +194,72 @@ function buildproductCardElement(productItem) {
         <span>${productItem.product_views} views</span>
       </div>
       <h3 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 leading-tight">
-        <a href="${detailLink}" class="hover:text-blue-600 transition-colors">${productItem.title}</a>
+        <a href="${detailLink}" class="hover:text-blue-600 transition-colors">${productItem.title || productItem.name}</a>
       </h3>
-      <p class="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4">${productItem.content}</p>
+      <p class="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4">${productItem.content || productItem.description || ''}</p>
       <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
         <a href="${detailLink}" class="text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors">Read more</a>
-        ${editDeleteButtons}
+        ${actionsPlaceholder}
       </div>
     </div>
   `;
 
   articleElement.innerHTML = completeCardHtml;
+
+  // Now fill actionsPlaceholder with actual buttons (Edit/Delete) if current user is owner
+  const actionsContainer = articleElement.querySelector(`#card-actions-${productItem.id}`);
+  if (actionsContainer && CURRENT_USER_ID && Number(CURRENT_USER_ID) === Number(productItem.user_id)) {
+    // Edit button
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'text-gray-600 hover:text-gray-700 text-sm transition-colors';
+    editBtn.textContent = 'Edit';
+    editBtn.addEventListener('click', function(evt) {
+      evt.preventDefault();
+      openEditModalFromServer(productItem.id);
+    });
+
+
+    // Delete button (keeps existing behaviour but via AJAX confirm or confirm+link)
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'text-red-600 hover:text-red-700 text-sm transition-colors';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.addEventListener('click', function(evt) {
+      evt.preventDefault();
+      if (!confirm('Are you sure you want to delete this product?')) return;
+      // perform deletion: you may already have a delete flow; here we call delete URL with fetch
+      // if you prefer to keep current href-based delete, you can instead window.location = deleteLink;
+      (async () => {
+        try {
+          const csrftoken = (function getCookie(name){ let v=null; if(document.cookie){document.cookie.split(';').forEach(c=>{c=c.trim(); if(c.startsWith(name+'=')){ v=decodeURIComponent(c.substring(name.length+1));}});} return v; })('csrftoken');
+          const res = await fetch(deleteLink, {
+            method: 'POST', // set to method your view expects (POST with csrf or DELETE if supported)
+            headers: { 'X-CSRFToken': csrftoken, 'Accept': 'application/json' },
+            credentials: 'same-origin'
+          });
+          if (!res.ok) {
+            const j = await res.json().catch(()=>({}));
+            showToast(j.message || 'Gagal menghapus produk', '', 'error');
+            return;
+          }
+          showToast('Produk dihapus', '', 'success');
+          // refresh list
+          fetchproductFromServer();
+        } catch (err) {
+          console.error('Delete error', err);
+          showToast('Network error saat menghapus', '', 'error');
+        }
+      })();
+    });
+
+    actionsContainer.appendChild(editBtn);
+    actionsContainer.appendChild(deleteBtn);
+  }
+
   return articleElement;
 }
+
 
 // Render all product cards
 function renderAllproductCards(productItems) {
@@ -246,6 +309,42 @@ async function fetchproductFromServer() {
   }
 }
 
+async function openEditModalFromServer(productId) {
+  try {
+    const url = PRODUCT_DETAIL_ENDPOINT_TEMPLATE.replace('00000000', productId);
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) {
+      showToast('Gagal mengambil data produk', '', 'error');
+      return;
+    }
+    const product = await res.json();
+    // gunakan existing openEditModal (yang prefill form)
+    if (typeof openEditModal === 'function') {
+      openEditModal(product);
+    } else {
+      // fallback: manual prefill
+      document.getElementById('name').value = product.name || '';
+      document.getElementById('price').value = product.price || '';
+      document.getElementById('description').value = product.description || '';
+      document.getElementById('category').value = product.category || '';
+      document.getElementById('thumbnail').value = product.thumbnail || '';
+      document.getElementById('is_featured').checked = Boolean(product.is_featured);
+      const form = document.getElementById('productForm');
+      form.dataset.editId = product.id;
+      showModal();
+    }
+  } catch (err) {
+    console.error('Fetch detail error', err);
+    showToast('Network error saat mengambil data produk', '', 'error');
+  }
+}
+
+
+// Refresh when product created or updated
+document.addEventListener('productAdded', fetchproductFromServer);
+document.addEventListener('productUpdated', fetchproductFromServer);
+
+
 // Event handlers
 function handleShowAllproductClick() {
   activeFilter = 'all';
@@ -264,6 +363,8 @@ function initializeproductPage() {
   
   fetchproductFromServer();
 }
+
+
 
 // Start application
 initializeproductPage();
