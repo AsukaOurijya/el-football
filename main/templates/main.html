@@ -16,25 +16,32 @@
       <p class="text-[#94bef2]">Explore, Buy, and Sell your Football Goods!</p>
     </div>
 
-      <button onclick="showModal()" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold outline outline-2 outline-blue-600 outline-offset-[-2px] rounded-md hover:bg-blue-600 hover:text-white transition-colors mb-4">
+      <button onclick="showModal()" id= "add-ajax-btn" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold outline outline-2 outline-blue-600 outline-offset-[-2px] rounded-md hover:bg-blue-600 hover:text-white transition-colors mb-4">
         Add Product by AJAX
       </button>
 
-      <button onclick="(function(){ if(allproductData && allproductData.length) openEditModal(allproductData[0]); else showModal(); })()" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold outline outline-2 outline-blue-600 outline-offset-[-2px] rounded-md hover:bg-blue-600 hover:text-white transition-colors mb-4">
+      <button onclick="(
+        function(){ if(allproductData && allproductData.length) openEditModal(allproductData[0]); else showModal(); })()" id="edit-ajax-btn" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold outline outline-2 outline-blue-600 outline-offset-[-2px] rounded-md hover:bg-blue-600 hover:text-white transition-colors mb-4">
         Edit Product by AJAX
       </button>
 
-      <button onclick="fetchproductFromServer" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold outline outline-2 outline-blue-600 outline-offset-[-2px] rounded-md hover:bg-blue-600 hover:text-white transition-colors mb-4">
+      <button onclick="fetchproductFromServer" id="refresh-btn" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold outline outline-2 outline-blue-600 outline-offset-[-2px] rounded-md hover:bg-blue-600 hover:text-white transition-colors mb-4">
         Refresh
       </button>
 
+      <button onclick="showToast('Sample Title', 'This is a sample message for the toast notification.')" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold outline outline-2 outline-blue-600 outline-offset-[-2px] rounded-md hover:bg-blue-600 hover:text-white transition-colors mb-4">
+        Test Button for Toast
+      </button>
+
     <!-- Filter Section -->
+
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 bg-[#2e3c4d] rounded-lg border border-gray-200 p-4">
       <div class="flex space-x-3 mb-4 sm:mb-0">
-        <a href="?" class="{% if request.GET.filter == 'all' or not request.GET.filter  %} bg-blue-600 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-blue-600 hover:text-white">
+        <a id="filter-all" href="{% url 'main:show_main' %}" class="{% if request.GET.filter == 'all' or not request.GET.filter  %} bg-blue-600 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-blue-600 hover:text-white">
           All Products
         </a>
-        <a href="?filter=my" class="{% if request.GET.filter == 'my' %} bg-blue-600 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-blue-600 hover:text-white">
+        
+        <a id="filter-my" href="{% url 'main:show_main' %}?filter=my" class="{% if request.GET.filter == 'my' %} bg-blue-600 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-blue-600 hover:text-white">
           My Products
         </a>
       </div>
@@ -45,8 +52,30 @@
       {% endif %}
     </div>
 
+  <!-- Filter Section (replace existing) -->
+   <!--
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 bg-[#2e3c4d] rounded-lg border border-gray-200 p-4">
+  <div class="flex space-x-3 mb-4 sm:mb-0">
+    <a id="filter-all" href="{% url 'main:show_main' %}" class="{% if request.GET.filter == 'all' or not request.GET.filter  %} bg-blue-600 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-blue-600 hover:text-white">
+      All Products
+    </a>
+
+    <a id="filter-my" href="{% url 'main:show_main' %}?filter=my" class="{% if request.GET.filter == 'my' %} bg-blue-600 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-blue-600 hover:text-white">
+      My Products
+    </a>
+  </div>
+
+  {% if user.is_authenticated %}
+    <div class="text-sm text-[#94bef2]">
+      Last login: {{ last_login }}
+    </div>
+  {% endif %}
+</div>
+-->
+
+
       <!-- Loading State -->
-    <div id="loading" class="bg-white rounded-lg border border-gray-200 p-12 text-center hidden">
+    <div id="loading" class="bg-[#1e2b40] rounded-lg border border-gray-200 p-12 text-center hidden">
       <svg class="animate-spin h-8 w-8 text-blue-600 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
@@ -61,6 +90,19 @@
     <div id="grid" class="hidden"></div>
 
     {% if not product_list %}
+<!-- Empty state (used by JS) -->
+<div id="empty" class="hidden bg-[#1e2b40] rounded-lg border border-gray-200 p-12 text-center">
+  <div class="w-32 h-32 mx-auto mb-4">
+    <img src="{% static 'image/emu_otori.png' %}" alt="No product available" class="w-full h-full object-contain">
+  </div>
+  <h3 class="text-lg font-medium text-white mb-2">No product found</h3>
+  <p class="text-[#94bef2] mb-6">Add your First Product!</p>
+  <a href="{% url 'main:add_product' %}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+    Add Product
+  </a>
+</div>
+
+<!--
       <div class="bg-[#1e2b40] rounded-lg border border-gray-200 p-12 text-center">
         <div class="w-32 h-32 mx-auto mb-4">
           <img src="{% static 'image/emu_otori.png' %}" alt="No product available" class="w-full h-full object-contain">
@@ -71,14 +113,18 @@
           Add Product
         </a>
       </div>
-      
-      {% else %}
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {% for product in product_list %}
-          {% include 'card_product.html' with product=product %}
-        {% endfor %}
-      </div>
-    {% endif %}
+
+
+    -->
+    {% else %}
+    <div id="serverGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+    {% for product in product_list %}
+      {% include 'card_product.html' with product=product %}
+    {% endfor %}
+    </div>
+  {% endif %}
+  <!-- JS will render into #grid (keep it present) -->
+  <div id="grid" class="hidden"></div>
 
   </div>
 </div>
@@ -90,7 +136,6 @@ const CURRENT_USER_ID = "{{ user.id|default_if_none:'' }}";
 // template placeholders (pastikan ini di template, bukan file .js statis)
 const UPDATE_PRODUCT_ENDPOINT_TEMPLATE = "{% url 'main:update_product_ajax' '00000000-0000-0000-0000-000000000000' %}";
 const PRODUCT_DETAIL_ENDPOINT_TEMPLATE = "{% url 'main:product_detail_json' '00000000-0000-0000-0000-000000000000' %}";
-
 
 // DOM Elements
 const loadingSpinner = document.getElementById('loading');
@@ -118,15 +163,23 @@ function updateFilterButtonsAppearance() {
 }
 
 // Show/hide page sections
+// Ganti fungsi lama dengan yang ini (null-safe)
 function displayPageSection({ showLoading = false, showError = false, showEmpty = false, showGrid = false }) {
-  loadingSpinner.classList.toggle('hidden', !showLoading);
-  errorMessage.classList.toggle('hidden', !showError);
-  emptyStateDisplay.classList.toggle('hidden', !showEmpty);
-  productGridContainer.classList.toggle('hidden', !showGrid);
-  
-  // Add grid classes when showing grid
-  if (showGrid) {
-    productGridContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+  if (loadingSpinner) {
+    loadingSpinner.classList.toggle('hidden', !showLoading);
+  }
+  if (errorMessage) {
+    errorMessage.classList.toggle('hidden', !showError);
+  }
+  if (emptyStateDisplay) {
+    emptyStateDisplay.classList.toggle('hidden', !showEmpty);
+  }
+  if (productGridContainer) {
+    productGridContainer.classList.toggle('hidden', !showGrid);
+    // Add grid classes when showing grid
+    if (showGrid) {
+      productGridContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+    }
   }
 }
 
@@ -140,6 +193,81 @@ function getReadableCategoryName(categoryCode) {
   };
   return categoryMapping[categoryCode] || categoryCode;
 }
+
+// safe-bind header buttons (do this after all other functions are defined)
+(function(){
+  // helper to safely get element
+  function $id(id){ return document.getElementById(id); }
+
+  // Wait until DOM and your functions likely exist
+  document.addEventListener('DOMContentLoaded', function() {
+    const addBtn = $id('add-ajax-btn');
+    const editBtn = $id('edit-ajax-btn');
+    const refreshBtn = $id('refresh-btn');
+
+    // add button -> just open modal in create mode
+    if (addBtn) {
+      addBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        // ensure form is in create mode
+        if (typeof showModal === 'function') {
+          // clear any edit-id and set modal title/button
+          const form = document.getElementById('productForm');
+          if (form) {
+            form.dataset.editId = '';
+            form.reset();
+          }
+          // set modal labels if present
+          const titleEl = document.getElementById('crudModalTitle');
+          if (titleEl) titleEl.textContent = 'Add New Product';
+          const submitBtn = document.getElementById('submitproduct');
+          if (submitBtn) submitBtn.textContent = 'Deploy Product';
+          showModal();
+        } else {
+          console.warn('showModal not available');
+        }
+      });
+    }
+
+    // edit button -> open modal for first product (safe default), or show message
+    if (editBtn) {
+      editBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        if (typeof openEditModalFromServer === 'function') {
+          // if you want to prompt choose ID, use first product as example:
+          if (Array.isArray(allproductData) && allproductData.length) {
+            openEditModalFromServer(allproductData[0].id);
+          } else {
+            showModal(); // open empty modal if no product
+            // optionally showToast('No product to edit');
+          }
+        } else if (typeof openEditModal === 'function') {
+          // if you already have a product object somewhere
+          if (Array.isArray(allproductData) && allproductData.length) {
+            openEditModal(allproductData[0]);
+          } else {
+            showModal();
+          }
+        } else {
+          console.warn('openEditModal / openEditModalFromServer not available');
+        }
+      });
+    }
+
+    // refresh button -> call fetchproductFromServer safely
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        if (typeof fetchproductFromServer === 'function') {
+          fetchproductFromServer();
+        } else {
+          console.warn('fetchproductFromServer not available');
+        }
+      });
+    }
+  });
+})();
+
 
 // Create product card element
 // Create product card element (REPLACE existing buildproductCardElement function)
@@ -261,14 +389,19 @@ function buildproductCardElement(productItem) {
 }
 
 
-// Render all product cards
+// Render all product cards into #grid (does NOT auto-remove serverGrid)
 function renderAllproductCards(productItems) {
+  if (!productGridContainer) {
+    console.warn('productGridContainer not found');
+    return;
+  }
   productGridContainer.innerHTML = '';
   productItems.forEach(productItem => {
     const cardElement = buildproductCardElement(productItem);
     productGridContainer.appendChild(cardElement);
   });
 }
+
 
 // Filter and display product
 function filterAndDisplayproduct() {
@@ -287,10 +420,10 @@ function filterAndDisplayproduct() {
 }
 
 // Fetch product data from server
-async function fetchproductFromServer() {
+async function fetchproductFromServer(force = false) {
   try {
     displayPageSection({ showLoading: true });
-    
+
     const response = await fetch(PRODUCT_API_ENDPOINT, {
       headers: { 'Accept': 'application/json' },
     });
@@ -301,7 +434,16 @@ async function fetchproductFromServer() {
 
     const productData = await response.json();
     allproductData = productData || [];
-    
+
+    // If server rendered grid exists and this is NOT a forced refresh, keep it
+    const serverGridEl = document.getElementById('serverGrid');
+    if (serverGridEl && !force) {
+      // we do not replace server-side HTML on initial load — just hide loading
+      displayPageSection({ showGrid: true });
+      return;
+    }
+
+    // Otherwise render client-side cards (either no serverGrid or forced refresh)
     filterAndDisplayproduct();
   } catch (error) {
     console.error('Error loading product:', error);
@@ -341,8 +483,8 @@ async function openEditModalFromServer(productId) {
 
 
 // Refresh when product created or updated
-document.addEventListener('productAdded', fetchproductFromServer);
-document.addEventListener('productUpdated', fetchproductFromServer);
+document.addEventListener('productAdded', () => fetchproductFromServer(true));
+document.addEventListener('productUpdated', () => fetchproductFromServer(true));
 
 
 // Event handlers
@@ -356,6 +498,133 @@ function handleShowMyproductClick() {
   filterAndDisplayproduct();
 }
 
+(function(){
+  // helper: get element by id
+  const $ = id => document.getElementById(id);
+
+  // showModal (define only if missing)
+  if (typeof window.showModal !== 'function') {
+    window.showModal = function() {
+      const modal = $('crudModal');
+      const modalContent = $('crudModalContent');
+      if (!modal) { console.warn('showModal: #crudModal not found'); return; }
+      modal.classList.remove('hidden');
+      // small enter animation classes (if using tailwind classes)
+      if (modalContent) {
+        modalContent.classList.remove('opacity-0','scale-95');
+        modalContent.classList.add('opacity-100','scale-100');
+      }
+    };
+    console.log('Defined fallback showModal()');
+  }
+
+  // hideModal (define only if missing)
+  if (typeof window.hideModal !== 'function') {
+    window.hideModal = function() {
+      const modal = $('crudModal');
+      const modalContent = $('crudModalContent');
+      if (!modal) return;
+      if (modalContent) {
+        modalContent.classList.remove('opacity-100','scale-100');
+        modalContent.classList.add('opacity-0','scale-95');
+        setTimeout(()=> modal.classList.add('hidden'), 150);
+      } else {
+        modal.classList.add('hidden');
+      }
+    };
+    console.log('Defined fallback hideModal()');
+  }
+
+  // openEditModal: prefill form + mark data-edit-id, then show modal
+  if (typeof window.openEditModal !== 'function') {
+    window.openEditModal = function(product){
+      const form = $('productForm');
+      if (!form) {
+        // still open modal so user can see empty form
+        showModal();
+        return;
+      }
+
+      // normalize field names (adjust if your form uses different names)
+      if (form.elements['name']) form.elements['name'].value = product.name ?? product.title ?? '';
+      if (form.elements['price']) form.elements['price'].value = product.price ?? '';
+      if (form.elements['description']) form.elements['description'].value = product.description ?? product.content ?? '';
+      if (form.elements['category']) form.elements['category'].value = product.category ?? '';
+      if (form.elements['thumbnail']) form.elements['thumbnail'].value = product.thumbnail ?? '';
+      if (form.elements['is_featured']) form.elements['is_featured'].checked = !!product.is_featured;
+
+      form.dataset.editId = product.id ?? product.pk ?? '';
+      const titleEl = $('crudModalTitle');
+      if (titleEl) titleEl.textContent = 'Edit Product';
+      const submitBtn = $('submitproduct');
+      if (submitBtn) submitBtn.textContent = 'Update Product';
+
+      showModal();
+    };
+    console.log('Defined fallback openEditModal()');
+  }
+
+  // Ensure single submit handler for productForm
+  (function bindFormSubmitOnce(){
+    const form = $('productForm');
+    if (!form) return;
+    if (form.dataset.listenerBound) return;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const editId = form.dataset.editId || '';
+      if (editId && typeof window.updateProductAjax === 'function') {
+        updateProductAjax(editId, form);
+        return;
+      }
+      if (typeof window.addproductEntry === 'function') {
+        addproductEntry(e);
+        return;
+      }
+      // fallback behavior: just close modal (prevents silent failure)
+      console.warn('No addproductEntry/updateProductAjax defined; closing modal as fallback.');
+      hideModal();
+    });
+    form.dataset.listenerBound = '1';
+    console.log('Bound productForm submit handler (fallback)');
+  })();
+
+  // If a header button uses inline onclick but functions were missing,
+  // this ensures clicking them will work now that showModal/openEditModal exist.
+  document.addEventListener('DOMContentLoaded', function(){
+    const addBtn = $('add-ajax-btn');
+    if (addBtn) {
+      addBtn.addEventListener('click', function(evt){
+        evt.preventDefault();
+        const form = $('productForm');
+        if (form) {
+          form.dataset.editId = '';
+          form.reset();
+          const titleEl = $('crudModalTitle'); if (titleEl) titleEl.textContent = 'Add New Product';
+          const submitBtn = $('submitproduct'); if (submitBtn) submitBtn.textContent = 'Deploy Product';
+        }
+        showModal();
+      });
+    }
+
+    const editBtn = $('edit-ajax-btn');
+    if (editBtn) {
+      editBtn.addEventListener('click', function(evt){
+        evt.preventDefault();
+        if (Array.isArray(window.allproductData) && allproductData.length) {
+          if (typeof window.openEditModalFromServer === 'function') {
+            openEditModalFromServer(allproductData[0].id);
+          } else {
+            openEditModal(allproductData[0]);
+          }
+        } else {
+          showModal();
+        }
+      });
+    }
+  });
+})();
+
+/*
 // Initialize page
 function initializeproductPage() {
   showAllproductButton.addEventListener('click', handleShowAllproductClick);
@@ -363,7 +632,25 @@ function initializeproductPage() {
   
   fetchproductFromServer();
 }
+*/
 
+// Initialize page (safe)
+function initializeproductPage() {
+  if (showAllproductButton) {
+    showAllproductButton.addEventListener('click', handleShowAllproductClick);
+  }
+  if (showMyproductButton) {
+    showMyproductButton.addEventListener('click', handleShowMyproductClick);
+  }
+  
+  // register global event listeners (safe)
+  if (typeof fetchproductFromServer === 'function') {
+    // initial fetch
+    fetchproductFromServer();
+  } else {
+    console.warn('fetchproductFromServer not defined yet');
+  }
+}
 
 
 // Start application

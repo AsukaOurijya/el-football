@@ -44,7 +44,7 @@ def show_xml(request):
     return HttpResponse(xml_data, description_type="application/xml")
 
 def show_json(request):
-    product_list = product.objects.all()
+    product_list = Product.objects.all()
     data = [
         {
             'id': str(product.id),
@@ -169,29 +169,51 @@ def delete_product(request,id):
     product.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
 
-@csrf_exempt
+
 @require_POST
+@login_required
 def add_product_entry_ajax(request):
-    name = request.POST.get("name")
-    price = request.POST.get("price")
-    description = request.POST.get("description")
-    category = request.POST.get("category")
-    thumbnail = request.POST.get("thumbnail")
-    is_featured = request.POST.get("is_featured") == 'on'  # checkbox handling
-    user = request.user
+    name = (request.POST.get("name") or "").strip()
+    price = (request.POST.get("price") or "").strip()
+    description = (request.POST.get("description") or "").strip()
+    category = (request.POST.get("category") or "").strip()
+    thumbnail = (request.POST.get("thumbnail") or "").strip()
+    is_featured = request.POST.get("is_featured") in ('on','true','1')
+
+    errors = {}
+    if not name:
+        errors['name'] = 'Name is required'
+    if not description:
+        errors['description'] = 'Description is required'
+    try:
+        price_val = float(price) if price else 0
+    except ValueError:
+        errors['price'] = 'Price must be a number'
+
+    if errors:
+        return JsonResponse({'success': False, 'errors': errors, 'message':'Validation error'}, status=400)
 
     new_product = Product(
-        name=name, 
-        price=price,
+        name=name,
+        price=price_val,
         description=description,
         category=category,
         thumbnail=thumbnail,
         is_featured=is_featured,
-        user=user
+        user=request.user
     )
     new_product.save()
 
-    return HttpResponse(b"CREATED", status=201)
+    data = {
+      'id': str(new_product.pk),
+      'name': new_product.name,
+      'description': new_product.description,
+      'price': str(new_product.price),
+      'category': new_product.category,
+      'thumbnail': new_product.thumbnail,
+      'is_featured': new_product.is_featured,
+    }
+    return JsonResponse({'success': True, 'data': data}, status=201)
 
 @require_http_methods(["POST"])
 @login_required

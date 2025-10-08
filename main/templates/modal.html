@@ -102,68 +102,47 @@
   }
 
   // helper getCookie (CSRF)
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.startsWith(name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
       }
     }
-    return cookieValue;
   }
+  return cookieValue;
+}
 
   // TEMPLATE endpoint update (gunakan placeholder UUID yang akan di-replace)
   const UPDATE_PRODUCT_ENDPOINT_TEMPLATE = "{% url 'main:update_product_ajax' '00000000-0000-0000-0000-000000000000' %}";
 
-  // --- Create (addproductEntry) ---
-  async function addproductEntry(e) {
-    // if called from form submit, e may be an event
-    if (e && e.preventDefault) e.preventDefault();
+async function addproductEntry(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const form = document.getElementById('productForm');
+  const formData = new FormData(form);
+  const csrftoken = getCookie('csrftoken');
 
-    const form = document.querySelector('#productForm');
-    const formData = new FormData(form);
-    const csrftoken = getCookie('csrftoken');
-
-    try {
-      const res = await fetch("{% url 'main:add_product_entry_ajax' %}", {
-        method: "POST",
-        headers: {
-          'X-CSRFToken': csrftoken,
-          'Accept': 'application/json'
-        },
-        credentials: 'same-origin',
-        body: formData,
-      });
-
-      // check response
-      if (!res.ok) {
-        const errJson = await res.json().catch(()=>({}));
-        showToast(errJson.message || 'Gagal menambahkan produk', '', 'error');
-        return false;
-      }
-
-      const data = await res.json().catch(()=>({}));
-      form.reset();
-      hideModal();
-
-      // Show toast notification
-      showToast('Produk Berhasil Ditambahkan!', '', 'success');
-
-      // Dispatch custom event to notify main.html about new data
-      document.dispatchEvent(new CustomEvent('productAdded', { detail: data }));
-
-      return true;
-    } catch (err) {
-      console.error('Network error create:', err);
-      showToast('Network error: gagal menambahkan produk', '', 'error');
-      return false;
-    }
+  const res = await fetch("{% url 'main:add_product_entry_ajax' %}", {
+    method: "POST",
+    headers: { 'X-CSRFToken': csrftoken, 'Accept': 'application/json' },
+    credentials: 'same-origin',
+    body: formData
+  });
+  const json = await res.json().catch(()=>({}));
+  if (!res.ok) {
+    showToast(json.message || 'Gagal menambahkan produk','', 'error');
+    // optionally display field errors from json.errors
+    return;
   }
+  form.reset();
+  hideModal();
+  showToast('Produk Berhasil Ditambahkan!','', 'success');
+  document.dispatchEvent(new CustomEvent('productAdded', { detail: json.data }));
+}
 
   // --- Update (updateProductAjax) ---
   async function updateProductAjax(id, form) {
@@ -229,6 +208,7 @@
   };
 
   // central submit listener: decide create vs update
+  /*
   document.addEventListener('DOMContentLoaded', function() {
     const productForm = document.getElementById('productForm');
     if (!productForm) return;
@@ -243,6 +223,18 @@
       }
     });
   });
+  */ 
+
+  document.getElementById('productForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const form = e.target;
+    const editId = form.dataset.editId || '';
+    if (editId) {
+      updateProductAjax(editId, form);
+    } else {
+      addproductEntry(e);
+    }
+  });
 
   // event listeners to refresh main list when create/update succeed
   document.addEventListener('productAdded', function(e) {
@@ -254,4 +246,5 @@
     // prefer main page to handle refresh; you can also call fetchproductFromServer() here
     // fetchproductFromServer();
   });
+  
 </script>
